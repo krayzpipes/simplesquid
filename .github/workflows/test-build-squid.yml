@@ -1,0 +1,23 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: build-push
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_KEY }}
+          repository: krayzpipes/simplesquid
+          tag_with_ref: true
+          path: src/squid/
+          dockerfile: src/squid/Dockerfile
+          push: true

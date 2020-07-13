@@ -3,3 +3,20 @@ services:
   squid:
     container_name: squid
     build: src/squid
+    ports:
+      - 127.0.0.1:3128:3128
+    volumes:
+      - log_dir:/var/log/squid/
+    environment:
+      ALLOWED_SRC_CIDRS: "127.0.0.0/8 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8"
+      #DENIED_DST_CIDRS:
+      DENIED_DOMAINS: ".google.com .yahoo.com"
+      SQUID_CREDS: "user1 pass1|user2 pass2"
+  fluentd:
+    container_name: fluentd
+    build: src/fluentd
+    volumes:
+      - log_dir:/var/log/squid/
+
+volumes:
+  log_dir:
